@@ -15,7 +15,7 @@ class GfycatClient(object):
         # implement them.
         pass
 
-    def fetch_url(self, url):
+    def upload_from_url(self, url):
         params = {'fetchUrl': url}
         r = requests.get(FETCH_URL_ENDPOINT, params=params)
 
@@ -23,42 +23,16 @@ class GfycatClient(object):
             raise GfycatClientError('Error fetching the URL', r.status_code)
 
         response = r.json()
+        if 'error' in response:
+            raise GfycatClientError(response['error'])
+
         return response
 
-    def fetch_url_lazy(self, url, random_string=None):
-        if not random_string:
-            random_string = str(uuid.uuid4())[:8]
-
-        params = {'fetchUrl': url}
-        r = requests.get(FETCH_URL_LAZY_ENDPOINT + random_string,
-                         params=params)
-
-        if r.status_code != 200:
-            raise GfycatClientError('Error fetching the URL', r.status_code)
-
-        return random_string
-
-    def check_fetch_status(self, key):
-        """
-        Check the status of conversion of a GIF.
-        :param key:
-        :return:
-        """
-        r = requests.get(FETCH_URL_STATUS_ENDPOINT + key)
-        if r.status_code != 200:
-            raise GfycatClientError('Unable to check the status',
-                                    r.status_code)
-        return r.json()
-
-    def upload_file(self, filename, key=None):
+    def upload_from_file(self, filename):
         """
         Upload a local file to Gfycat
-        :param filename:
-        :param key: A unique string to later check the status of file upload
-        :return:
         """
-        if not key:
-            key = str(uuid.uuid4())[:8]
+        key = str(uuid.uuid4())[:8]
 
         form = [('key', key),
                 ('acl', ACL),
@@ -75,13 +49,15 @@ class GfycatClient(object):
         if r.status_code != 200:
             raise GfycatClientError('Error uploading the GIF', r.status_code)
 
-        return key
+        info = self.uploaded_file_info(key)
+        if 'error' in info:
+            raise GfycatClientError(info['error'])
 
-    def check_upload_status(self, key):
+        return info
+
+    def uploaded_file_info(self, key):
         """
         Get information about an uploaded GIF.
-        :param key:
-        :return:
         """
         r = requests.get(FILE_UPLOAD_STATUS_ENDPOINT + key)
         if r.status_code != 200:
@@ -89,25 +65,21 @@ class GfycatClient(object):
                                     r.status_code)
 
         return r.json()
-        pass
 
     def query_gfy(self, gfyname):
         """
         Query a gfy name for URLs and more information.
-        :param gfyname:
-        :return:
         """
         r = requests.get(QUERY_ENDPOINT + gfyname)
         if r.status_code != 200:
             raise GfycatClientError('Unable to query for the GIF',
                                     r.status_code)
+
         return r.json()
 
     def check_link(self, link):
         """
         Check if a link has been already converted.
-        :param link:
-        :return:
         """
         r = requests.get(CHECK_LINK_ENDPOINT + link)
         if r.status_code != 200:
