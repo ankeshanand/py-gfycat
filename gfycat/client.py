@@ -2,10 +2,10 @@ import requests
 import uuid
 
 from constants import (FETCH_URL_ENDPOINT, FETCH_URL_LAZY_ENDPOINT,
-    FETCH_URL_STATUS_ENDPOINT, FILE_UPLOAD_ENDPOINT,
-    FILE_UPLOAD_STATUS_ENDPOINT, ACL, AWS_ACCESS_KEY_ID, POLICY,
-    SUCCESS_ACTION_STATUS, SIGNATURE, CONTENT_TYPE, QUERY_ENDPOINT,
-    CHECK_LINK_ENDPOINT)
+                       FETCH_URL_STATUS_ENDPOINT, FILE_UPLOAD_ENDPOINT,
+                       FILE_UPLOAD_STATUS_ENDPOINT, ACL, AWS_ACCESS_KEY_ID,
+                       POLICY, SUCCESS_ACTION_STATUS, SIGNATURE, CONTENT_TYPE,
+                       QUERY_ENDPOINT, CHECK_LINK_ENDPOINT)
 from error import GfycatClientError
 
 
@@ -38,8 +38,17 @@ class GfycatClient(object):
 
         return random_string
 
-    def check_fetch_status(self, random_string):
-        pass
+    def check_fetch_status(self, key):
+        """
+        Check the status of conversion of a GIF.
+        :param key:
+        :return:
+        """
+        r = requests.get(FETCH_URL_STATUS_ENDPOINT + key)
+        if r.status_code != 200:
+            raise GfycatClientError('Unable to check the status',
+                                    r.status_code)
+        return r.json()
 
     def upload_file(self, filename, key=None):
         """
@@ -69,11 +78,41 @@ class GfycatClient(object):
         return key
 
     def check_upload_status(self, key):
+        """
+        Get information about an uploaded GIF.
+        :param key:
+        :return:
+        """
+        r = requests.get(FILE_UPLOAD_STATUS_ENDPOINT + key)
+        if r.status_code != 200:
+            raise GfycatClientError('Unable to check the status',
+                                    r.status_code)
+
+        return r.json()
         pass
 
     def query_gfy(self, gfyname):
-        pass
+        """
+        Query a gfy name for URLs and more information.
+        :param gfyname:
+        :return:
+        """
+        r = requests.get(QUERY_ENDPOINT + gfyname)
+        if r.status_code != 200:
+            raise GfycatClientError('Unable to query for the GIF',
+                                    r.status_code)
+        return r.json()
 
     def check_link(self, link):
-        pass
+        """
+        Check if a link has been already converted.
+        :param link:
+        :return:
+        """
+        r = requests.get(CHECK_LINK_ENDPOINT + link)
+        if r.status_code != 200:
+            raise GfycatClientError('Unable to check the link',
+                                    r.status_code)
+
+        return r.json()
 
