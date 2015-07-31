@@ -16,6 +16,9 @@ class GfycatClient(object):
         pass
 
     def upload_from_url(self, url):
+        """
+        Upload a GIF from a URL.
+        """
         params = {'fetchUrl': url}
         r = requests.get(FETCH_URL_ENDPOINT, params=params)
 
