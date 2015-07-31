@@ -6,4 +6,4 @@ A Python client for the [Gfycat API](https://gfycat.com/api).
 Installation
 ------------
 
-    pip install imgurpython
+    pip install gfycat
