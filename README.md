@@ -7,3 +7,15 @@ Installation
 ------------
 
     pip install gfycat
+    
+Getting Started
+---------------
+
+```python
+from gfycat import GfycatClient
+
+client = GfycatClient()
+
+# Example request
+client.upload_from_file('willsmith.gif')
+```
