@@ -1,5 +1,7 @@
 # py-gfycat
-A Python client for the [Gfycat API](https://gfycat.com/api). It can be used to interact with the gfycat API in your projects.
+A Python client for the [Gfycat API](https://gfycat.com/api). 
+
+[![PyPI version](https://badge.fury.io/py/gfycat.svg)](http://badge.fury.io/py/gfycat)
 
 Installation
 ------------
