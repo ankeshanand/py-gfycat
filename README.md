@@ -34,3 +34,15 @@ except GfycatClientError as e
     print(e.error_message)
     print(e.status_code)
 ```
+
+GfycatClient Functions
+----------------------
+##### Uploads
+* `upload_from_url(url)`
+* `upload_from_file(filepath)`
+
+##### Query a GFY for URLs and more information
+* `query_gfy(gfyname)`
+
+##### Check if a link has been already converted
+* `check_link(link)`
