@@ -27,8 +27,7 @@ Getting Started
 Error Handling
 --------------
 
-Error types \* GfycatClientError - General error handler, access message
-and status code via
+* GfycatClientError - General error handler, access message and status code via
 
 .. code:: python
 
@@ -43,19 +42,16 @@ and status code via
 GfycatClient Functions
 ----------------------
 
-Uploads
-'''''''
+**Uploads**
 
 -  ``upload_from_url(url)``
 -  ``upload_from_file(filepath)``
 
-Query a GFY for URLs and more information
-'''''''''''''''''''''''''''''''''''''''''
+**Query a GFY for URLs and more information**
 
 -  ``query_gfy(gfyname)``
 
-Check if a link has been already converted
-''''''''''''''''''''''''''''''''''''''''''
+**Check if a link has been already converted**
 
 -  ``check_link(link)``
 
