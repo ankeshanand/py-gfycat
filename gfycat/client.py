@@ -44,10 +44,10 @@ class GfycatClient(object):
                 ('signature', SIGNATURE),
                 ('Content-Type', CONTENT_TYPE),
                 ('policy', POLICY)]
+        data = dict(form)
 
-        with open(filename, 'rb') as upfile:
-            form.append(('file', upfile))
-            r = requests.post(FILE_UPLOAD_ENDPOINT, files=form)
+        files = {'file': open(filename, 'rb')}
+        r = requests.post(FILE_UPLOAD_ENDPOINT, data=data, files=files)
 
         if r.status_code != 200:
             raise GfycatClientError('Error uploading the GIF', r.status_code)
