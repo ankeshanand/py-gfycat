@@ -17,7 +17,7 @@ Getting Started
 
 .. code:: python
 
-    from gfycat import GfycatClient
+    from gfycat.client import GfycatClient
 
     client = GfycatClient()
 
