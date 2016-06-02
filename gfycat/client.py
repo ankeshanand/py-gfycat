@@ -1,12 +1,12 @@
 import requests
 import uuid
 
-from constants import (FETCH_URL_ENDPOINT, FETCH_URL_LAZY_ENDPOINT,
+from gfycat.constants import (FETCH_URL_ENDPOINT, FETCH_URL_LAZY_ENDPOINT,
                        FETCH_URL_STATUS_ENDPOINT, FILE_UPLOAD_ENDPOINT,
                        FILE_UPLOAD_STATUS_ENDPOINT, ACL, AWS_ACCESS_KEY_ID,
                        POLICY, SUCCESS_ACTION_STATUS, SIGNATURE, CONTENT_TYPE,
                        QUERY_ENDPOINT, CHECK_LINK_ENDPOINT)
-from error import GfycatClientError
+from gfycat.error import GfycatClientError
 
 
 class GfycatClient(object):
