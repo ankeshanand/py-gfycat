@@ -1,4 +1,5 @@
 import requests
+import time
 import uuid
 
 from gfycat.constants import (FETCH_URL_ENDPOINT, FETCH_URL_LAZY_ENDPOINT,
@@ -53,6 +54,9 @@ class GfycatClient(object):
             raise GfycatClientError('Error uploading the GIF', r.status_code)
 
         info = self.uploaded_file_info(key)
+        while 'timeout' in info.get('error', '').lower():
+            time.sleep(2)
+            info = self.uploaded_file_info(key)
         if 'error' in info:
             raise GfycatClientError(info['error'])
 
