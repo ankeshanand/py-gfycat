@@ -23,3 +23,9 @@ QUERY_ENDPOINT = 'https://api.gfycat.com/v1/gfycats/'
 
 # Check Link
 CHECK_LINK_ENDPOINT = 'http://gfycat.com/cajax/checkUrl/'
+
+# OAuth
+OAUTH_ENDPOINT = 'https://api.gfycat.com/v1/oauth/token'
+
+# Error
+ERROR_KEY = 'errorMessage'
