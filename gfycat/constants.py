@@ -19,7 +19,13 @@ SIGNATURE = 'mk9t/U/wRN4/uU01mXfeTe2Kcoc='
 CONTENT_TYPE = 'image/gif'
 
 # Query
-QUERY_ENDPOINT = 'http://gfycat.com/cajax/get/'
+QUERY_ENDPOINT = 'https://api.gfycat.com/v1/gfycats/'
 
 # Check Link
 CHECK_LINK_ENDPOINT = 'http://gfycat.com/cajax/checkUrl/'
+
+# OAuth
+OAUTH_ENDPOINT = 'https://api.gfycat.com/v1/oauth/token'
+
+# Error
+ERROR_KEY = 'errorMessage'
