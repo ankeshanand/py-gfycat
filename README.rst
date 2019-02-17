@@ -12,6 +12,11 @@ Installation
 
     pip install gfycat
 
+Gfycat API Key
+---------------
+Go to https://developers.gfycat.com/signup/#/apiform and sign up for an API key if you don't already have one.
+Keep the Client ID and Client Secret to use for initializing the Python client.
+
 Getting Started
 ---------------
 
@@ -19,7 +24,7 @@ Getting Started
 
     from gfycat.client import GfycatClient
 
-    client = GfycatClient()
+    client = GfycatClient(Gfycat Client ID, Gfycat Client Secret)
 
     # Example request
     client.upload_from_file('willsmith.gif')
