@@ -4,8 +4,8 @@
 # http://gfycat.com/api
 
 # Fetching from a URL
-FETCH_URL_ENDPOINT = 'http://upload.gfycat.com/transcode'
-FETCH_URL_LAZY_ENDPOINT = 'http://upload.gfycat.com/transcodeRelease/'
+FETCH_URL_ENDPOINT = 'https://upload.gfycat.com/transcode'
+FETCH_URL_LAZY_ENDPOINT = 'https://upload.gfycat.com/transcodeRelease/'
 FETCH_URL_STATUS_ENDPOINT = 'https://upload.gfycat.com/status/'
 
 # File Upload
@@ -22,7 +22,7 @@ CONTENT_TYPE = 'image/gif'
 QUERY_ENDPOINT = 'https://api.gfycat.com/v1/gfycats/'
 
 # Check Link
-CHECK_LINK_ENDPOINT = 'http://gfycat.com/cajax/checkUrl/'
+CHECK_LINK_ENDPOINT = 'https://gfycat.com/cajax/checkUrl/'
 
 # OAuth
 OAUTH_ENDPOINT = 'https://api.gfycat.com/v1/oauth/token'

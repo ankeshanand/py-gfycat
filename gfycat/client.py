@@ -3,32 +3,33 @@ import time
 import uuid
 import json
 
-from gfycat.constants import (FETCH_URL_ENDPOINT, FETCH_URL_LAZY_ENDPOINT,
-                       FETCH_URL_STATUS_ENDPOINT, FILE_UPLOAD_ENDPOINT,
-                       FILE_UPLOAD_STATUS_ENDPOINT, ACL, AWS_ACCESS_KEY_ID,
-                       POLICY, SUCCESS_ACTION_STATUS, SIGNATURE, CONTENT_TYPE,
-                       QUERY_ENDPOINT, CHECK_LINK_ENDPOINT, OAUTH_ENDPOINT, ERROR_KEY)
+from gfycat.constants import (
+    FETCH_URL_ENDPOINT, FETCH_URL_LAZY_ENDPOINT,
+    FETCH_URL_STATUS_ENDPOINT, FILE_UPLOAD_ENDPOINT,
+    FILE_UPLOAD_STATUS_ENDPOINT, ACL, AWS_ACCESS_KEY_ID,
+    POLICY, SUCCESS_ACTION_STATUS, SIGNATURE, CONTENT_TYPE,
+    QUERY_ENDPOINT, CHECK_LINK_ENDPOINT, OAUTH_ENDPOINT, ERROR_KEY
+)
 from gfycat.error import GfycatClientError
 
 
 class GfycatClient(object):
-    def __init__(self,client_id, client_secret):
-        # Will hold access tokens and auth credentials when Gfycat decides to
-        # implement them.
+    def __init__(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
-        
+
         self.get_token()
-        
+
     def upload_from_url(self, url):
         """
         Upload a GIF from a URL.
         """
         self.check_token()
-        
-        params = {'fetchUrl': url}
-        r = requests.get(FETCH_URL_ENDPOINT, params=params)
 
+        # md5 which is used by default, returns an error if gfyCat detects the content is already on GfyCat.
+        # noMd5 skips this check, and uploads the content anyway.
+        params = {'fetchUrl': url, "noMd5": "true"}
+        r = requests.post(FETCH_URL_ENDPOINT, params=params)
         if r.status_code != 200:
             raise GfycatClientError('Error fetching the URL', r.status_code)
 
@@ -84,19 +85,19 @@ class GfycatClient(object):
         Query a gfy name for URLs and more information.
         """
         self.check_token()
-        
+
         r = requests.get(QUERY_ENDPOINT + gfyname, headers=self.headers)
-        
+
         response = r.json()
-        
+
         if r.status_code != 200 and not ERROR_KEY in response:
             raise GfycatClientError('Bad response from Gfycat',
                                     r.status_code)
         elif ERROR_KEY in response:
             raise GfycatClientError(response[ERROR_KEY], r.status_code)
-        
+
         return response
-    
+
     def check_link(self, link):
         """
         Check if a link has been already converted.
@@ -107,32 +108,31 @@ class GfycatClient(object):
                                     r.status_code)
 
         return r.json()
-    
+
     def check_token(self):
         """
         Checks if Token is still valid and updates if it's not
         """
         if time.time() > self.expires_at:
             self.get_token()
-            
+
     def get_token(self):
         """
         Gets the authorization token
         """
-        
+
         payload = {'grant_type': 'client_credentials', 'client_id': self.client_id, 'client_secret': self.client_secret}
-        r = requests.post(OAUTH_ENDPOINT, data=json.dumps(payload), headers={'content-type': 'application/json'})
-		
+        r = requests.get(OAUTH_ENDPOINT, data=json.dumps(payload), headers={'content-type': 'application/json'})
+
         response = r.json()
-        
+
         if r.status_code != 200 and not ERROR_KEY in response:
             raise GfycatClientError('Error fetching the OAUTH URL', r.status_code)
         elif ERROR_KEY in response:
             raise GfycatClientError(response[ERROR_KEY], r.status_code)
-        
+
         self.token_type = response['token_type']
         self.access_token = response['access_token']
         self.expires_in = response['expires_in']
         self.expires_at = time.time() + self.expires_in - 5
-        self.headers = {'content-type': 'application/json','Authorization': self.token_type + ' ' + self.access_token}
-            
+        self.headers = {'content-type': 'application/json', 'Authorization': self.token_type + ' ' + self.access_token}
