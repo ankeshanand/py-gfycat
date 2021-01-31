@@ -8,7 +8,8 @@ from gfycat.constants import (
     FETCH_URL_STATUS_ENDPOINT, FILE_UPLOAD_ENDPOINT,
     FILE_UPLOAD_STATUS_ENDPOINT, ACL, AWS_ACCESS_KEY_ID,
     POLICY, SUCCESS_ACTION_STATUS, SIGNATURE, CONTENT_TYPE,
-    QUERY_ENDPOINT, CHECK_LINK_ENDPOINT, OAUTH_ENDPOINT, ERROR_KEY
+    QUERY_ENDPOINT, QUERY_FALLBACK, CHECK_LINK_ENDPOINT, 
+    OAUTH_ENDPOINT, ERROR_KEY
 )
 from gfycat.error import GfycatClientError
 
@@ -80,20 +81,26 @@ class GfycatClient(object):
 
         return r.json()
 
-    def query_gfy(self, gfyname):
+    def query_gfy(self, gfyname, base = QUERY_ENDPOINT):
         """
         Query a gfy name for URLs and more information.
         """
         self.check_token()
 
-        r = requests.get(QUERY_ENDPOINT + gfyname, headers=self.headers)
+        r = requests.get(base + gfyname, headers=self.headers)
 
         response = r.json()
 
         if r.status_code != 200 and not ERROR_KEY in response:
+            if base == QUERY_ENDPOINT:
+                return self.query_gfy(gfyname, QUERY_FALLBACK)
+
             raise GfycatClientError('Bad response from Gfycat',
                                     r.status_code)
         elif ERROR_KEY in response:
+            if base == QUERY_ENDPOINT:
+                return self.query_gfy(gfyname, QUERY_FALLBACK)
+
             raise GfycatClientError(response[ERROR_KEY], r.status_code)
 
         return response

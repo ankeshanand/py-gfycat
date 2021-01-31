@@ -20,6 +20,7 @@ CONTENT_TYPE = 'image/gif'
 
 # Query
 QUERY_ENDPOINT = 'https://api.gfycat.com/v1/gfycats/'
+QUERY_FALLBACK = 'https://api.redgifs.com/v1/gfycats/'
 
 # Check Link
 CHECK_LINK_ENDPOINT = 'https://gfycat.com/cajax/checkUrl/'
